@@ -1,0 +1,19 @@
+.message { position: sticky; top: 12px; z-index: 5; max-width: 620px; margin: 28px auto -12px; padding: 13px 18px; border-radius: 999px; background: var(--garden); color: white; text-align: center; font-size: 0.84rem; box-shadow: var(--shadow); }
+.settingsGrid { max-width: 900px; margin: 54px auto 0; display: grid; gap: 18px; }
+.section { padding: clamp(24px, 4vw, 36px); box-shadow: none; }
+.sectionHeading { display: grid; grid-template-columns: 34px 1fr; gap: 14px; padding-bottom: 24px; border-bottom: 1px solid var(--line); }
+.sectionHeading > span { color: var(--coral); font-family: ui-monospace, monospace; font-size: 0.72rem; }
+.sectionHeading h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; }
+.sectionHeading p, .dangerZone p { margin: 7px 0 0; color: rgba(24, 63, 51, 0.58); font-size: 0.83rem; line-height: 1.55; }
+.field { min-height: 86px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line); }
+.field:last-child { border-bottom: 0; }
+.field span { display: grid; gap: 5px; }
+.field small { color: rgba(24, 63, 51, 0.52); line-height: 1.45; }
+.field select { min-width: 130px; min-height: 44px; padding: 0 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--ivory); color: var(--garden); }
+.field input { width: 48px; height: 26px; accent-color: var(--moss); }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.hidden { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.privacy ul { margin: 22px 0 0; padding-left: 22px; color: rgba(24, 63, 51, 0.68); line-height: 1.9; font-size: 0.88rem; }
+.dangerZone { display: flex; align-items: center; justify-content: space-between; gap: 24px; border-color: rgba(143, 73, 62, 0.26); background: rgba(255, 248, 243, 0.76); }
+.dangerZone h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: 1.35rem; }
+@media (max-width: 620px) { .field, .dangerZone { align-items: stretch; flex-direction: column; padding: 18px 0; } .field select { width: 100%; } .dangerZone button { width: 100%; } }
