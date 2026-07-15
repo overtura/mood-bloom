@@ -10,7 +10,7 @@ async function openWithEmptyGarden(page: import("@playwright/test").Page, path: 
   await page.reload();
 }
 
-test("첫 기록부터 Future Bloom과 정원 복원까지 이어진다", async ({ page }) => {
+test("첫 기록부터 미래 정원과 정원 복원까지 이어진다", async ({ page }) => {
   const errors: string[] = [];
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
   await openWithEmptyGarden(page, "/");
@@ -21,7 +21,7 @@ test("첫 기록부터 Future Bloom과 정원 복원까지 이어진다", async 
 
   const savedBeforePreview = await page.evaluate(() => localStorage.getItem("mood-bloom:garden:v1"));
   await page.getByRole("button", { name: /미래 정원 미리보기/ }).click();
-  await page.getByRole("button", { name: "Day 30" }).click();
+  await page.getByRole("button", { name: "30일째" }).click();
   await expect(page.getByText("달빛 정원")).toBeVisible();
   const hasHorizontalOverflow = await page.evaluate(() => Array.from(document.querySelectorAll("*")).some(
     (element) => element.getBoundingClientRect().right > window.innerWidth + 1,

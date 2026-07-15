@@ -37,7 +37,7 @@ export function CheckInPage() {
     setIsClassifying(true);
     setShowPreview(false);
     const result = await classifyMoodLocally(normalized);
-    saveEntry(normalized, localDate, result.decision);
+    saveEntry(normalized, localDate);
     setDecision(result.decision);
     setSource(result.source);
     setIsClassifying(false);
@@ -60,10 +60,9 @@ export function CheckInPage() {
             maxLength={280}
             rows={6}
             placeholder="예: 바쁜 하루 끝에 따뜻한 차 한 잔이 오래 기억에 남았다."
-            onFocus={preloadMoodModel}
             onChange={(event) => {
               setText(event.target.value);
-              if (event.target.value.trim().length > 1) preloadMoodModel();
+              if (event.target.value.trim().length >= 12) preloadMoodModel();
             }}
           />
           <div className={styles.formMeta}><span>{text.length} / 280</span><span>하루 한 기록 · 오늘 기록은 수정 가능</span></div>
@@ -75,10 +74,10 @@ export function CheckInPage() {
       </section>
 
       {plan && decision && (
-        <section className={styles.reveal} aria-labelledby="reveal-title">
+        <section className={styles.reveal} aria-labelledby="reveal-title" aria-live="polite">
           <div className={styles.revealVisual}>
             <LazyGardenScene plan={plan} quality={state.settings.renderQuality} reducedMotion={state.settings.reducedMotion} label="오늘 문장에서 피어난 디지털 식물" />
-            <span className={styles.specimenLabel}>SPECIMEN · {localDate.replaceAll("-", ".")}</span>
+            <span className={styles.specimenLabel}>오늘의 표본 · {localDate.replaceAll("-", ".")}</span>
           </div>
           <div className={styles.revealCopy}>
             <span className={layout.badge}>오늘의 식물</span>

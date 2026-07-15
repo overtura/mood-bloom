@@ -27,7 +27,8 @@ export function isMoodDecision(value: unknown): value is MoodDecision {
   const candidate = value as Record<string, unknown>;
   return (
     VALENCES.includes(String(candidate.valence)) &&
-    [1, 2, 3, 4, 5].includes(Number(candidate.energy)) &&
+    typeof candidate.energy === "number" &&
+    [1, 2, 3, 4, 5].includes(candidate.energy) &&
     STABILITIES.includes(String(candidate.stability)) &&
     DIRECTIONS.includes(String(candidate.direction)) &&
     ARCHETYPES.includes(String(candidate.archetype))

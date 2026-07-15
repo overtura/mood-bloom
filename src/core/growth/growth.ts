@@ -3,7 +3,7 @@ import { createSeededRandom } from "../seed/seed";
 import type { GrowthDay, GrowthStage, PlantIdentity, PlantPlan } from "./types";
 
 const STAGES: readonly GrowthStage[] = [
-  { day: 1, name: "씨앗 정원", description: "첫 빛이 흙 위로 올라옵니다.", unlock: "Heart Seed와 첫 화분", scale: 0.45, branches: 1, accents: 2 },
+  { day: 1, name: "씨앗 정원", description: "첫 빛이 흙 위로 올라옵니다.", unlock: "마음씨앗과 첫 화분", scale: 0.45, branches: 1, accents: 2 },
   { day: 3, name: "작은 온실", description: "가느다란 가지가 빛을 찾습니다.", unlock: "새로운 화분 형태", scale: 0.62, branches: 3, accents: 4 },
   { day: 7, name: "빛나는 화단", description: "꽃잎과 작은 빛 생명체가 모입니다.", unlock: "희귀 꽃잎과 작은 빛 생명체", scale: 0.78, branches: 5, accents: 7 },
   { day: 14, name: "야생 온실", description: "식물의 고유한 변이가 선명해집니다.", unlock: "변종 장식 슬롯", scale: 0.92, branches: 7, accents: 10 },

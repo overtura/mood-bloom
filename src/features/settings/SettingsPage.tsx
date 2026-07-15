@@ -1,6 +1,6 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import { useApp } from "../../app/AppProvider";
-import { exportGardenState, importGardenState } from "../../core/storage/storage";
+import { exportGardenState, importGardenState, MAX_GARDEN_IMPORT_BYTES } from "../../core/storage/storage";
 import { PageIntro } from "../../ui/PageIntro";
 import layout from "../../ui/layout.module.css";
 import styles from "./SettingsPage.module.css";
@@ -25,8 +25,9 @@ export function SettingsPage() {
     const file = event.target.files?.[0];
     if (!file) return;
     try {
-      replaceState(importGardenState(await file.text()));
-      setMessage("백업에서 정원을 복원했습니다.");
+      if (file.size > MAX_GARDEN_IMPORT_BYTES) throw new Error("백업 파일이 1MB 제한을 초과했습니다.");
+      const restored = replaceState(importGardenState(await file.text()));
+      setMessage(restored ? "백업에서 정원을 복원했습니다." : "정원은 이번 화면에서 열었지만 브라우저에 저장하지 못했습니다.");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "백업을 불러오지 못했습니다.");
     } finally {
@@ -35,14 +36,14 @@ export function SettingsPage() {
   }
 
   function handleClear() {
-    if (!window.confirm("이 기기의 Mood Bloom 기록을 모두 지울까요? 내보낸 백업이 없으면 되돌릴 수 없습니다.")) return;
-    clearState();
-    setMessage("이 기기의 정원 기록을 모두 지웠습니다.");
+    if (!window.confirm("이 기기의 무드 블룸 기록을 모두 지울까요? 내보낸 백업이 없으면 되돌릴 수 없습니다.")) return;
+    const cleared = clearState();
+    setMessage(cleared ? "이 기기의 정원 기록을 모두 지웠습니다." : "브라우저 저장소가 차단되어 일부 기록을 지우지 못했습니다.");
   }
 
   return (
     <div className={layout.page}>
-      <PageIntro eyebrow="Settings" title="내 기기, 내 정원"><p>기록은 계정 없이 이 브라우저에 저장됩니다. 직접 백업하고 복원하며, 표시 방식도 편안하게 조절할 수 있습니다.</p></PageIntro>
+      <PageIntro eyebrow="설정" title="내 기기, 내 정원"><p>기록은 계정 없이 이 브라우저에 저장됩니다. 직접 백업하고 복원하며, 표시 방식도 편안하게 조절할 수 있습니다.</p></PageIntro>
       {message && <div className={styles.message} role="status">{message}</div>}
       <div className={styles.settingsGrid}>
         <section className={`${layout.panel} ${styles.section}`} aria-labelledby="display-title">

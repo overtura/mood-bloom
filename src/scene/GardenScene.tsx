@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
 import { Canvas } from "@react-three/fiber";
-import { ContactShadows, Environment, OrbitControls } from "@react-three/drei";
+import { ContactShadows, OrbitControls } from "@react-three/drei";
 import type { PlantPlan } from "../core/growth/types";
 import { Plant } from "./Plant";
 import { StaticPlant } from "./StaticPlant";
 import styles from "./GardenScene.module.css";
 
+let webGlSupport: boolean | undefined;
+
 function supportsWebGl() {
+  if (webGlSupport !== undefined) return webGlSupport;
   try {
     const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") || canvas.getContext("webgl"));
+    const context = canvas.getContext("webgl2") || canvas.getContext("webgl");
+    webGlSupport = Boolean(context);
+    context?.getExtension("WEBGL_lose_context")?.loseContext();
   } catch {
-    return false;
+    webGlSupport = false;
   }
+  return webGlSupport;
 }
 
 export function GardenScene({ plan, quality, reducedMotion, interactive = false, label }: { plan: PlantPlan; quality: "low" | "medium" | "high"; reducedMotion: boolean; interactive?: boolean; label?: string }) {
@@ -40,10 +46,10 @@ export function GardenScene({ plan, quality, reducedMotion, interactive = false,
       >
         <color attach="background" args={["#eef0e5"]} />
         <ambientLight intensity={1.35} />
+        <hemisphereLight args={["#fff6de", "#4e6b49", 0.55]} />
         <directionalLight position={[3, 5, 4]} intensity={2.1} color="#fff6de" />
         <Plant plan={plan} quality={quality} reducedMotion={reducedMotion} />
         <ContactShadows position={[0, -0.11, 0]} opacity={0.28} scale={4.6} blur={2.2} far={3} />
-        {quality === "high" && <Environment preset="forest" environmentIntensity={0.2} />}
         {interactive && <OrbitControls enablePan={false} enableZoom={false} minPolarAngle={Math.PI / 2.8} maxPolarAngle={Math.PI / 1.8} />}
       </Canvas>
       {interactive && <span className={styles.hint}>드래그해 천천히 돌려보세요</span>}

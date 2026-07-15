@@ -5,6 +5,7 @@ import { createGrowthPlan, createPlantIdentity, getGrowthStage, nextGrowthStage 
 import { LazyGardenScene } from "../../scene/LazyGardenScene";
 import { StaticPlant } from "../../scene/StaticPlant";
 import { PageIntro } from "../../ui/PageIntro";
+import { getArchetypeLabel } from "../../ui/MoodTraits";
 import layout from "../../ui/layout.module.css";
 import styles from "./GardenPage.module.css";
 
@@ -18,7 +19,7 @@ export function GardenPage() {
   }, [heartEntry, uniqueDays]);
 
   if (!heartEntry || !heartPlan) {
-    return <div className={layout.page}><PageIntro eyebrow="My Garden" title="아직 조용한 정원이에요."><p>첫 문장을 남기면 Heart Seed가 이곳에 뿌리내립니다.</p></PageIntro><section className={`${layout.panel} ${layout.empty} ${styles.empty}`}><div className={styles.emptySeed} /><h2>첫 씨앗을 심어볼까요?</h2><AppLink href="/" className={layout.button}>오늘의 문장 남기기</AppLink></section></div>;
+    return <div className={layout.page}><PageIntro eyebrow="나의 정원" title="아직 조용한 정원이에요."><p>첫 문장을 남기면 마음씨앗이 이곳에 뿌리내립니다.</p></PageIntro><section className={`${layout.panel} ${layout.empty} ${styles.empty}`}><div className={styles.emptySeed} /><h2>첫 씨앗을 심어볼까요?</h2><AppLink href="/" className={layout.button}>오늘의 문장 남기기</AppLink></section></div>;
   }
 
   const currentStage = getGrowthStage(uniqueDays);
@@ -26,11 +27,11 @@ export function GardenPage() {
   const remaining = Math.max(0, nextStage.day - uniqueDays);
   return (
     <div className={layout.page}>
-      <PageIntro eyebrow="My Garden" title="문장들이 자라는 개인 정원"><p>하루를 놓쳐도 식물은 사라지지 않습니다. 누적된 고유 기록일만큼 정원이 천천히 깊어집니다.</p></PageIntro>
+      <PageIntro eyebrow="나의 정원" title="문장들이 자라는 개인 정원"><p>하루를 놓쳐도 식물은 사라지지 않습니다. 누적된 고유 기록일만큼 정원이 천천히 깊어집니다.</p></PageIntro>
       <section className={styles.heart}>
-        <div className={styles.scene}><LazyGardenScene plan={heartPlan} quality={state.settings.renderQuality} reducedMotion={state.settings.reducedMotion} interactive label="회전할 수 있는 Heart Seed" /></div>
+        <div className={styles.scene}><LazyGardenScene plan={heartPlan} quality={state.settings.renderQuality} reducedMotion={state.settings.reducedMotion} interactive label="회전할 수 있는 마음씨앗" /></div>
         <div className={styles.heartCopy}>
-          <span className={layout.badge}>Heart Seed · {uniqueDays}번의 기록</span>
+          <span className={layout.badge}>마음씨앗 · {uniqueDays}번의 기록</span>
           <h2>{currentStage.name}</h2>
           <blockquote>“{heartEntry.text}”</blockquote>
           <div className={styles.stageMap}>
@@ -42,11 +43,11 @@ export function GardenPage() {
       </section>
 
       <section className={styles.specimens} aria-labelledby="specimen-title">
-        <div className={styles.sectionHeading}><div><p className={layout.eyebrow}>Daily Specimens</p><h2 id="specimen-title" className={layout.sectionTitle}>날짜별 표본</h2></div><span>{state.entries.length}개의 식물</span></div>
+        <div className={styles.sectionHeading}><div><p className={layout.eyebrow}>매일의 표본</p><h2 id="specimen-title" className={layout.sectionTitle}>날짜별 표본</h2></div><span>{state.entries.length}개의 식물</span></div>
         <div className={styles.grid}>
           {[...state.entries].reverse().map((entry, index) => {
             const plan = createGrowthPlan(createPlantIdentity(entry.moodDecision, entry.speciesSeed), entry.dailySeed, Math.min(uniqueDays, index + 1));
-            return <article key={entry.id} className={layout.panel}><div className={styles.cardPlant}><StaticPlant plan={plan} label={`${entry.localDate} 식물`} /></div><div className={styles.cardCopy}><time>{entry.localDate.replaceAll("-", ".")}</time><p>{entry.text}</p><span>{plan.identity.archetype} · seed {entry.dailySeed.slice(0, 4)}</span></div></article>;
+            return <article key={entry.id} className={layout.panel}><div className={styles.cardPlant}><StaticPlant plan={plan} label={`${entry.localDate} 식물`} /></div><div className={styles.cardCopy}><time>{entry.localDate.replaceAll("-", ".")}</time><p>{entry.text}</p><span>{getArchetypeLabel(plan.identity.archetype)} · 씨앗 값 {entry.dailySeed.slice(0, 4)}</span></div></article>;
           })}
         </div>
       </section>

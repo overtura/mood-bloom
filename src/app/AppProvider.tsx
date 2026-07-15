@@ -1,10 +1,9 @@
-import { createContext, useContext, useEffect, useMemo, useReducer, type ReactNode } from "react";
-import type { MoodDecision } from "../core/mood/types";
+import { createContext, useContext, useMemo, useReducer, useState, type ReactNode } from "react";
 import { DEFAULT_GARDEN_STATE, type GardenState } from "../core/storage/schema";
-import { loadGardenState, saveGardenState, upsertJournalEntry } from "../core/storage/storage";
+import { clearGardenStorage, loadGardenStateWithStatus, saveGardenState, upsertJournalEntry, type GardenLoadResult } from "../core/storage/storage";
 
 type Action =
-  | { type: "save-entry"; text: string; localDate: string; decision: MoodDecision }
+  | { type: "save-entry"; text: string; localDate: string }
   | { type: "replace"; state: GardenState }
   | { type: "clear" }
   | { type: "quality"; quality: GardenState["settings"]["renderQuality"] }
@@ -12,9 +11,10 @@ type Action =
 
 type AppContextValue = {
   state: GardenState;
-  saveEntry: (text: string, localDate: string, decision: MoodDecision) => void;
-  replaceState: (state: GardenState) => void;
-  clearState: () => void;
+  storageMessage: string;
+  saveEntry: (text: string, localDate: string) => void;
+  replaceState: (state: GardenState) => boolean;
+  clearState: () => boolean;
   setQuality: (quality: GardenState["settings"]["renderQuality"]) => void;
   setReducedMotion: (enabled: boolean) => void;
 };
@@ -22,7 +22,7 @@ type AppContextValue = {
 const AppContext = createContext<AppContextValue | null>(null);
 
 function reducer(state: GardenState, action: Action): GardenState {
-  if (action.type === "save-entry") return upsertJournalEntry(state, action.text, action.localDate, action.decision);
+  if (action.type === "save-entry") return upsertJournalEntry(state, action.text, action.localDate);
   if (action.type === "replace") return action.state;
   if (action.type === "clear") return structuredClone(DEFAULT_GARDEN_STATE);
   if (action.type === "quality") {
@@ -32,17 +32,37 @@ function reducer(state: GardenState, action: Action): GardenState {
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, undefined, () => loadGardenState());
-  useEffect(() => saveGardenState(state), [state]);
+  const [initialLoad] = useState<GardenLoadResult>(loadGardenStateWithStatus);
+  const [state, dispatch] = useReducer(reducer, initialLoad.state);
+  const [storageMessage, setStorageMessage] = useState(initialLoad.warning);
 
-  const value = useMemo<AppContextValue>(() => ({
-    state,
-    saveEntry: (text, localDate, decision) => dispatch({ type: "save-entry", text, localDate, decision }),
-    replaceState: (nextState) => dispatch({ type: "replace", state: nextState }),
-    clearState: () => dispatch({ type: "clear" }),
-    setQuality: (quality) => dispatch({ type: "quality", quality }),
-    setReducedMotion: (enabled) => dispatch({ type: "reduced-motion", enabled }),
-  }), [state]);
+  const value = useMemo<AppContextValue>(() => {
+    function applyAction(action: Action) {
+      const nextState = reducer(state, action);
+      const saved = saveGardenState(nextState);
+      if (!saved) {
+        setStorageMessage("브라우저 저장 공간이 부족하거나 차단되어 변경 사항을 보관하지 못했습니다. JSON 백업을 먼저 저장해 주세요.");
+      }
+      dispatch(action);
+      return saved;
+    }
+
+    return {
+      state,
+      storageMessage,
+      saveEntry: (text, localDate) => applyAction({ type: "save-entry", text, localDate }),
+      replaceState: (nextState) => applyAction({ type: "replace", state: nextState }),
+      clearState: () => {
+        const cleared = clearGardenStorage();
+        if (cleared) setStorageMessage("");
+        else setStorageMessage("브라우저 저장소가 차단되어 일부 복구 사본을 지우지 못했습니다.");
+        dispatch({ type: "clear" });
+        return cleared;
+      },
+      setQuality: (quality) => applyAction({ type: "quality", quality }),
+      setReducedMotion: (enabled) => applyAction({ type: "reduced-motion", enabled }),
+    };
+  }, [state, storageMessage]);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

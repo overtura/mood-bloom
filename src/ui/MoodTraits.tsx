@@ -8,6 +8,10 @@ const LABELS = {
   archetype: { bloom: "꽃형", vine: "덩굴형", crystal: "결정형", moss: "이끼형", thorn: "가시형", spore: "포자형" },
 } as const;
 
+export function getArchetypeLabel(archetype: MoodDecision["archetype"]) {
+  return LABELS.archetype[archetype];
+}
+
 export function MoodTraits({ decision }: { decision: MoodDecision }) {
   return (
     <dl className={styles.traits}>

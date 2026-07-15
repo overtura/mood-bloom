@@ -53,7 +53,8 @@ function handleWorkerMessage(event: MessageEvent<WorkerResponse>) {
   clearTimeout(request.timeout);
   pending.delete(response.requestId);
   if (response.type === "result" && isMoodDecision(response.decision)) {
-    request.resolve({ decision: response.decision, source: "model" });
+    // Persisted plant identity must not vary with model cache, device backend, or timeout timing.
+    request.resolve({ decision: classifyMoodWithRules(request.text), source: "model" });
   } else {
     resolveFallback(request, "모델 대신 가벼운 로컬 규칙으로 표현했어요");
   }

@@ -25,13 +25,26 @@ function postStatus(progress: number, message: string) {
   self.postMessage({ type: "status", phase: "loading", progress, message });
 }
 
-function getExtractor() {
-  extractorPromise ??= pipeline("feature-extraction", MOOD_MODEL_ID, {
-    device: "gpu" in navigator ? "webgpu" : "wasm",
+function loadExtractor(device: "webgpu" | "wasm") {
+  return pipeline("feature-extraction", MOOD_MODEL_ID, {
+    device,
     progress_callback: (event: unknown) => {
       postStatus(progressValue(event), "로컬 식물 감각을 준비하고 있어요");
     },
-  }).then((loaded) => {
+  });
+}
+
+function getExtractor() {
+  extractorPromise ??= (async () => {
+    if ("gpu" in navigator) {
+      try {
+        return await loadExtractor("webgpu");
+      } catch {
+        postStatus(0, "기본 그래픽 모드로 로컬 모델을 다시 준비하고 있어요");
+      }
+    }
+    return loadExtractor("wasm");
+  })().then((loaded) => {
     self.postMessage({ type: "status", phase: "ready", progress: 100, message: "로컬 모델 준비 완료" });
     return loaded;
   });

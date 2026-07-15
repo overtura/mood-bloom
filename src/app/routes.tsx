@@ -17,14 +17,14 @@ export function navigate(path: string) {
   if (window.location.pathname === path) return;
   window.history.pushState({}, "", path);
   window.dispatchEvent(new PopStateEvent("popstate"));
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "auto" });
 }
 
-export function AppLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
+export function AppLink({ href, children, className, ariaCurrent }: { href: string; children: ReactNode; className?: string; ariaCurrent?: "page" }) {
   function handleClick(event: MouseEvent<HTMLAnchorElement>) {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     navigate(href);
   }
-  return <a href={href} className={className} onClick={handleClick}>{children}</a>;
+  return <a href={href} className={className} aria-current={ariaCurrent} onClick={handleClick}>{children}</a>;
 }
