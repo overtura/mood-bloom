@@ -69,11 +69,13 @@ maintainer-bot/          기존 maintainer bot 연결용 target 자산
 
 ## 정적 배포
 
+프로덕션 앱은 [무드 블룸에서 만나볼 수 있습니다](https://mood-bloom-seven.vercel.app/).
+
 `pnpm build` 결과는 `dist/`에 생성됩니다. `vercel.json`은 Vite 정적 배포와 SPA route fallback만 설정하며 Vercel Function을 만들지 않습니다.
 
 ## 웹 메타데이터와 접근성
 
-직접 생성한 추상 식물 이미지인 `public/mood-bloom-visual.png`를 파비콘, 모바일 홈 화면 아이콘, 소셜 공유 미리보기에 함께 사용합니다. 한국어 문서 제목과 설명, 웹 앱 매니페스트, 검색 로봇 정책, 현재 메뉴 표시, 본문 바로가기와 경로 전환 초점 이동을 제공합니다.
+직접 생성한 추상 식물 이미지 `public/mood-bloom-visual.png`는 파비콘과 모바일 홈 화면 아이콘에, 가로형 `public/mood-bloom-social.png`는 소셜 공유 미리보기에 사용합니다. 한국어 문서 제목과 설명, 웹 앱 매니페스트, 검색 로봇 정책, 현재 메뉴 표시, 본문 바로가기와 경로 전환 초점 이동을 제공합니다.
 
 ## 오픈소스와 라이선스
 
