@@ -1,0 +1,20 @@
+{
+  "name": "무드 블룸: 문장이 자라는 개인 정원",
+  "short_name": "무드 블룸",
+  "description": "하루의 한 문장을 기기 안에서만 해석해 결정적인 디지털 식물로 표현합니다.",
+  "lang": "ko-KR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f6f2e8",
+  "theme_color": "#f6f2e8",
+  "icons": [
+    {
+      "src": "/mood-bloom-visual.png",
+      "sizes": "1254x1254",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

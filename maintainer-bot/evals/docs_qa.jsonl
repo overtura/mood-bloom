@@ -1,0 +1,15 @@
+{"id":"architecture-backend-001","question":"이 프로젝트에 backend가 있는가?","must_include":["backend가 없다","정적 프런트엔드"],"must_not_include":["API 서버가 있다"]}
+{"id":"privacy-processing-001","question":"사용자 문장은 어디에서 처리되는가?","must_include":["브라우저 안","외부 서버로 전송하지 않는다"],"must_not_include":["OpenAI API"]}
+{"id":"model-id-001","question":"로컬 모델은 무엇인가?","must_include":["Xenova/paraphrase-multilingual-MiniLM-L12-v2","Web Worker"],"must_not_include":["서버 추론"]}
+{"id":"model-fallback-001","question":"모델 실패 시 fallback은 무엇인가?","must_include":["keyword/rule fallback","제품은 계속 동작"],"must_not_include":["전체 앱이 중단"]}
+{"id":"mood-renderer-001","question":"MoodDecision과 실제 렌더링 책임은 어떻게 나뉘는가?","must_include":["MoodDecision","TypeScript 생성 엔진","scene"],"must_not_include":["모델이 Three.js 코드를 생성"]}
+{"id":"seed-difference-001","question":"speciesSeed와 dailySeed의 차이는 무엇인가?","must_include":["품종과 정체성","날짜별 세부"],"must_not_include":["Math.random"]}
+{"id":"preview-state-001","question":"Future Bloom preview가 실제 기록에 영향을 주는가?","must_include":["영향을 주지 않는다","LocalStorage에 저장하지 않는다"],"must_not_include":["해금을 변경한다"]}
+{"id":"growth-days-001","question":"성장 단계는 무엇인가?","must_include":["Day 1","Day 3","Day 7","Day 14","Day 30"],"must_not_include":[]}
+{"id":"streak-loss-001","question":"streak가 끊기면 해금이 사라지는가?","must_include":["사라지지 않는다","누적 고유 기록일"],"must_not_include":["처음부터 다시"]}
+{"id":"backup-001","question":"데이터는 어떻게 백업하고 복구하는가?","must_include":["JSON export/import","schema"],"must_not_include":["클라우드 동기화"]}
+{"id":"diagnosis-001","question":"이 앱은 심리 진단을 제공하는가?","must_include":["제공하지 않는다","문장의 인상"],"must_not_include":["진단 결과"]}
+{"id":"verify-001","question":"검증 명령은 무엇인가?","must_include":["pnpm check","pnpm test:e2e"],"must_not_include":["npm test"]}
+{"id":"cycle-001","question":"5회 자가개선 주기는 어떻게 계산하는가?","must_include":["merge된 self-improvement PR","small이 4개","expansion"],"must_not_include":["counter 파일"]}
+{"id":"expansion-merge-001","question":"Expansion PR은 어떤 조건에서 자동 병합 가능한가?","must_include":["proposal","pnpm check","red-team 2회","rollback"],"must_not_include":["검증 없이 자동 병합"]}
+{"id":"risk-r3-001","question":"어떤 변경이 R3인가?","must_include":["backend","사용자 데이터 외부 전송","seed 호환성 파괴","proposal only"],"must_not_include":["자동 병합 가능"]}

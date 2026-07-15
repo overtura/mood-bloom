@@ -1,0 +1,11 @@
+.status { padding: 14px 16px; border-radius: var(--radius-sm); background: rgba(228, 235, 222, 0.56); color: rgba(24, 63, 51, 0.76); font-size: 0.82rem; }
+.row { display: flex; align-items: center; gap: 8px; }
+.row strong { margin-left: auto; font-variant-numeric: tabular-nums; }
+.dot { width: 8px; height: 8px; flex: 0 0 auto; border-radius: 50%; background: var(--sage-500); box-shadow: 0 0 0 4px rgba(119, 143, 107, 0.14); }
+[data-phase="loading"] .dot { animation: breathe 1.4s ease-in-out infinite; }
+[data-phase="ready"] .dot { background: #4b8962; }
+[data-phase="fallback"] .dot { background: var(--coral); }
+.track { height: 4px; margin-top: 12px; overflow: hidden; border-radius: 999px; background: rgba(24, 63, 51, 0.12); }
+.track i { display: block; height: 100%; border-radius: inherit; background: var(--moss); transition: width 180ms ease; }
+.status p { margin: 8px 0 0; color: rgba(24, 63, 51, 0.52); }
+@keyframes breathe { 50% { transform: scale(1.35); opacity: 0.65; } }

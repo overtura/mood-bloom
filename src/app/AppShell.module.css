@@ -1,0 +1,69 @@
+.app { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+
+.skipLink {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--garden);
+  color: var(--paper);
+  text-decoration: none;
+  transform: translateY(-180%);
+}
+
+.skipLink:focus { transform: translateY(0); }
+
+main:focus { outline: none; }
+
+.storageAlert {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  border: 1px solid rgba(165, 76, 57, 0.28);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 253, 248, 0.86);
+  color: #7d3526;
+  font-size: 0.9rem;
+}
+
+.header {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--garden);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.brandMark { position: relative; width: 26px; height: 30px; display: inline-block; }
+.brandMark::after { content: ""; position: absolute; width: 2px; height: 24px; background: var(--moss); left: 12px; bottom: 0; transform: rotate(8deg); }
+.brandMark i { position: absolute; width: 14px; height: 9px; background: var(--sage-500); border-radius: 100% 0 100% 0; top: 5px; left: 2px; transform: rotate(25deg); }
+.brandMark i:last-child { left: 12px; top: 1px; transform: scaleX(-1) rotate(25deg); background: var(--coral); }
+
+.nav { display: flex; align-items: center; gap: 4px; }
+.nav a { min-height: 44px; padding: 0 15px; display: inline-flex; align-items: center; border-radius: 999px; text-decoration: none; color: rgba(24, 63, 51, 0.72); font-size: 0.93rem; }
+.nav a:hover, .nav a.active { background: rgba(255, 253, 248, 0.78); color: var(--garden); box-shadow: inset 0 0 0 1px var(--line); }
+
+.footer { margin: 72px 0 20px; padding: 28px 0; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 20px; color: rgba(24, 63, 51, 0.64); font-size: 0.85rem; }
+.footer p { margin: 0; }
+
+@media (max-width: 640px) {
+  .app { width: min(100% - 20px, 1180px); }
+  .header { min-height: 68px; gap: 8px; }
+  .brand { font-size: 1.05rem; }
+  .brandMark { display: none; }
+  .nav a { padding: 0 10px; font-size: 0.84rem; }
+  .footer { flex-direction: column; margin-top: 44px; }
+}
